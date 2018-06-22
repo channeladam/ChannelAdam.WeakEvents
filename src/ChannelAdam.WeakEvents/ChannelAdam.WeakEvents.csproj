@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Adam Craven</Authors>
+    <Version>0.0.0</Version>
+    <Description>A .NET library for events that enforces a weak reference to the event handler.</Description>
+    <Copyright>Copyright 2014-2018 Adam Craven</Copyright>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/channeladam/ChannelAdam.WeakEvents</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/channeladam/ChannelAdam.WeakEvents</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>ChannelAdam,Weak Events</PackageTags>
+    <PackageIconUrl>https://devzone.channeladam.com/img/channeladam/channeladam-logo.png</PackageIconUrl>
+    <PackageReleaseNotes>2.0.0 - Refactored out of ChannelAdam.Core, target .NET Standard 2.0, no strong name signing</PackageReleaseNotes>
+  </PropertyGroup>
+
+</Project>

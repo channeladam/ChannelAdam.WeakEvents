@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{2E6EBDA0-881C-498A-AB41-E210EE95B6B0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChannelAdam.WeakEvents", "src\ChannelAdam.WeakEvents\ChannelAdam.WeakEvents.csproj", "{210ED99B-1A7C-4FEF-AE67-674DB292F06A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2E969850-94EE-4C16-8596-4F3F50F76245}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		GitVersion.yml = GitVersion.yml
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{210ED99B-1A7C-4FEF-AE67-674DB292F06A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{210ED99B-1A7C-4FEF-AE67-674DB292F06A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{210ED99B-1A7C-4FEF-AE67-674DB292F06A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{210ED99B-1A7C-4FEF-AE67-674DB292F06A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{210ED99B-1A7C-4FEF-AE67-674DB292F06A} = {2E6EBDA0-881C-498A-AB41-E210EE95B6B0}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B80005D3-C74F-4626-ADBB-BFD1B8C05AF9}
+	EndGlobalSection
+EndGlobal
