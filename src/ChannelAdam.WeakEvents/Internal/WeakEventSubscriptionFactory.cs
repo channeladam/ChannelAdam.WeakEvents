@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="WeakEventSubscriptionFactory.cs">
-//     Copyright (c) 2017-2018 Adam Craven. All rights reserved.
+//     Copyright (c) 2017-2021 Adam Craven. All rights reserved.
 // </copyright>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,11 +21,11 @@ namespace ChannelAdam.WeakEvents.Internal
     using System.Reflection;
 
     /// <summary>
-    /// Factory for creating weakly referenced event subscriptions/handlers.
+    /// Internal factory for creating weakly referenced event subscriptions/handlers.
     /// </summary>
     internal static class WeakEventSubscriptionFactory
     {
-        #region Public Methods
+        #region Internal Methods
 
         /// <summary>
         /// Creates a weak event subscription/handler, specifying a delegate method that can unsubscribe the event handler from the event.
@@ -36,34 +36,29 @@ namespace ChannelAdam.WeakEvents.Internal
         /// <returns>
         /// A weak event handler.
         /// </returns>
-        /// <exception cref="System.ArgumentNullException">If eventHandler is null.</exception>
-        /// <exception cref="System.ArgumentException">A WeakEventSubscription can only be created on instance methods.;eventHandler.</exception>
-        internal static IWeakEventSubscription<TEventArgs> Create<TEventArgs>(EventHandler<TEventArgs> eventHandler, UnsubscribeFromEventAction<TEventArgs> unsubscribeFromEventDelegate) where TEventArgs : EventArgs
+        /// <exception cref="ArgumentNullException">If eventHandler is null.</exception>
+        /// <exception cref="ArgumentException">A WeakEventSubscription can only be created on instance methods.</exception>
+        internal static IWeakEventSubscription<TEventArgs> Create<TEventArgs>(EventHandler<TEventArgs> eventHandler, UnsubscribeFromEventAction<TEventArgs>? unsubscribeFromEventDelegate) where TEventArgs : EventArgs
         {
-            if (eventHandler == null)
+            if (eventHandler is null)
             {
                 throw new ArgumentNullException(nameof(eventHandler));
             }
 
-            if (eventHandler.Method.IsStatic || eventHandler.Target == null)
+            if (eventHandler.Method?.DeclaringType is null || eventHandler.Method.IsStatic || eventHandler.Target is null)
             {
-                throw new ArgumentException("A WeakEventSubscription can only be created on instance methods.", nameof(eventHandler));
+                throw new ArgumentException("A WeakEventSubscription can be created on instance methods only", nameof(eventHandler));
             }
 
-            IWeakEventSubscription<TEventArgs> weakEventSubscription = CreateWeakEventSubscription<TEventArgs>(eventHandler, unsubscribeFromEventDelegate);
-
-            return weakEventSubscription;
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        private static IWeakEventSubscription<TEventArgs> CreateWeakEventSubscription<TEventArgs>(EventHandler<TEventArgs> eventHandler, UnsubscribeFromEventAction<TEventArgs> unsubscribeFromEventDelegate) where TEventArgs : EventArgs
-        {
             Type type = typeof(WeakEventSubscription<,>).MakeGenericType(eventHandler.Method.DeclaringType, typeof(TEventArgs));
-            ConstructorInfo constructor = type.GetConstructor(new Type[] { typeof(EventHandler<TEventArgs>), typeof(UnsubscribeFromEventAction<TEventArgs>) });
-            return (IWeakEventSubscription<TEventArgs>)constructor.Invoke(new object[] { eventHandler, unsubscribeFromEventDelegate });
+            ConstructorInfo? constructor = type.GetConstructor(new Type[] { typeof(EventHandler<TEventArgs>), typeof(UnsubscribeFromEventAction<TEventArgs>) });
+
+            if (constructor is null)
+            {
+                throw new ArgumentException("Could not get constructor for the given types");
+            }
+
+            return (IWeakEventSubscription<TEventArgs>)constructor.Invoke(new object?[] { eventHandler, unsubscribeFromEventDelegate });
         }
 
         #endregion

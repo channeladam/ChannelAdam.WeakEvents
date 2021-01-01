@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="WeakEventSubscription.cs">
-//     Copyright (c) 2017-2018 Adam Craven. All rights reserved.
+//     Copyright (c) 2017-2021 Adam Craven. All rights reserved.
 // </copyright>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ namespace ChannelAdam.WeakEvents.Internal
 
         private readonly WeakReference weakReferenceToEventHandlerTarget;
         private readonly UnboundDelegateEventHandler unboundDelegateEventHandler;
-        private UnsubscribeFromEventAction<TEventArgs> unsubscribeFromEventAction;
+        private UnsubscribeFromEventAction<TEventArgs>? unsubscribeFromEventAction;
 
         #endregion
 
@@ -59,7 +59,7 @@ namespace ChannelAdam.WeakEvents.Internal
         /// </summary>
         /// <param name="eventHandler">The event handler.</param>
         /// <param name="unsubscribeFromEventAction">The delegate method that unsubscribes from the event.</param>
-        public WeakEventSubscription(EventHandler<TEventArgs> eventHandler, UnsubscribeFromEventAction<TEventArgs> unsubscribeFromEventAction)
+        public WeakEventSubscription(EventHandler<TEventArgs> eventHandler, UnsubscribeFromEventAction<TEventArgs>? unsubscribeFromEventAction)
         {
             if (eventHandler == null)
             {
@@ -92,7 +92,7 @@ namespace ChannelAdam.WeakEvents.Internal
         /// An unbound delegate allows you to pass an instance of the type whose function you want to call when the delegate is called.
         /// See also http://msdn.microsoft.com/en-us/library/ms177195(v=vs.100).aspx.
         /// </remarks>
-        private delegate void UnboundDelegateEventHandler(TDelegateInstanceObject instanceObject, object sender, TEventArgs eventArgs);
+        private delegate void UnboundDelegateEventHandler(TDelegateInstanceObject instanceObject, object? sender, TEventArgs eventArgs);
 
         #endregion
 
@@ -117,7 +117,7 @@ namespace ChannelAdam.WeakEvents.Internal
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static implicit operator EventHandler<TEventArgs>(WeakEventSubscription<TDelegateInstanceObject, TEventArgs> weakEventHandler)
+        public static implicit operator EventHandler<TEventArgs>?(WeakEventSubscription<TDelegateInstanceObject, TEventArgs> weakEventHandler)
         {
             if (weakEventHandler == null)
             {
@@ -134,7 +134,7 @@ namespace ChannelAdam.WeakEvents.Internal
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static EventHandler<TEventArgs> ToEventHandler(WeakEventSubscription<TDelegateInstanceObject, TEventArgs> weakEventHandler)
+        public static EventHandler<TEventArgs>? ToEventHandler(WeakEventSubscription<TDelegateInstanceObject, TEventArgs> weakEventHandler)
         {
             if (weakEventHandler == null)
             {
@@ -148,7 +148,7 @@ namespace ChannelAdam.WeakEvents.Internal
 
         #region Private Methods
 
-        private void InvokeEventHandler(object sender, TEventArgs e)
+        private void InvokeEventHandler(object? sender, TEventArgs e)
         {
             if (this.weakReferenceToEventHandlerTarget.Target is TDelegateInstanceObject instanceObject)
             {

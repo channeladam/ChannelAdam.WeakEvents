@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="WeakEvent.cs">
-//     Copyright (c) 2017-2018 Adam Craven. All rights reserved.
+//     Copyright (c) 2017-2021 Adam Craven. All rights reserved.
 // </copyright>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,10 +36,10 @@ namespace ChannelAdam.WeakEvents
     /// </remarks>
     public class WeakEvent<TEventArgs> : IWeakEvent<TEventArgs> where TEventArgs : EventArgs
     {
-        private readonly object syncRoot = new object();
-        private readonly Dictionary<string, IWeakEventSubscription<TEventArgs>> weakEventSubscriptions = new Dictionary<string, IWeakEventSubscription<TEventArgs>>();
+        private readonly object syncRoot = new();
+        private readonly Dictionary<string, IWeakEventSubscription<TEventArgs>> weakEventSubscriptions = new();
 
-        private EventHandler<TEventArgs> myEventHandler;
+        private EventHandler<TEventArgs>? myEventHandler;
 
         #region Private Events
 
@@ -93,7 +93,7 @@ namespace ChannelAdam.WeakEvents
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public static explicit operator EventHandler<TEventArgs>(WeakEvent<TEventArgs> weakEvent)
+        public static explicit operator EventHandler<TEventArgs>?(WeakEvent<TEventArgs> weakEvent)
         {
             if (weakEvent == null)
             {
@@ -114,7 +114,7 @@ namespace ChannelAdam.WeakEvents
         /// <returns>
         /// The result of the conversion.
         /// </returns>
-        public EventHandler<TEventArgs> ToEventHandler(WeakEvent<TEventArgs> weakEvent)
+        public EventHandler<TEventArgs>? ToEventHandler(WeakEvent<TEventArgs> weakEvent)
         {
             if (weakEvent == null)
             {
@@ -130,6 +130,11 @@ namespace ChannelAdam.WeakEvents
         /// <param name="eventHandler">The event handler.</param>
         public void Subscribe(EventHandler<TEventArgs> eventHandler)
         {
+            if (eventHandler is null)
+            {
+                throw new ArgumentNullException(nameof(eventHandler));
+            }
+
             this.MyEvent += eventHandler;
         }
 
@@ -139,6 +144,11 @@ namespace ChannelAdam.WeakEvents
         /// <param name="eventHandler">The event handler.</param>
         public void Unsubscribe(EventHandler<TEventArgs> eventHandler)
         {
+            if (eventHandler is null)
+            {
+                throw new ArgumentNullException(nameof(eventHandler));
+            }
+
             this.MyEvent -= eventHandler;
         }
 
@@ -147,9 +157,9 @@ namespace ChannelAdam.WeakEvents
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="eventArgs">The <see cref="TEventArgs"/> instance containing the event data.</param>
-        public void Invoke(object sender, TEventArgs eventArgs)
+        public void Invoke(object? sender, TEventArgs eventArgs)
         {
-            EventHandler<TEventArgs> handler;
+            EventHandler<TEventArgs>? handler;
 
             lock (this.syncRoot)
             {
@@ -165,7 +175,7 @@ namespace ChannelAdam.WeakEvents
 
         private static string MakeDictionaryKeyFromDelegate(EventHandler<TEventArgs> eventHandler)
         {
-            return string.Format("{0}-{1}", eventHandler.Target.GetHashCode(), eventHandler.GetHashCode());
+            return string.Format("{0}-{1}", eventHandler.Target?.GetHashCode(), eventHandler.GetHashCode());
         }
 
         #endregion
